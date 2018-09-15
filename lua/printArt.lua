@@ -44,65 +44,67 @@ if selection ~= nill then
 		end
 
 
-	while n and n~='+' do
-		x = tonumber(n, 16)
-		y = file:read(1)
-		l = file:read(1)
-		y = tonumber(y, 16)
-		l = tonumber(l, 16)+1
-		local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
-		print("coords: "..x.. ":" ..y)
+		while n and n~='+' do
+			x = tonumber(n, 16)
+			y = file:read(1)
+			l = file:read(1)
+			y = tonumber(y, 16)
+			l = tonumber(l, 16)+1
+			local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
+			print("coords: "..x.. ":" ..y)
 
-		if not result then
-			io.write("Failed adding shape: " .. tostring(reason) .. "\n")
-			io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
-			break
+			if not result then
+				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
+				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
+				break
+			end
+			n = file:read(1)
+			printer.commit(1)
+			n = file:read(1)
+			print("part ".. i .. ":" .. j .." committed")
+			io.read("*n")
+
+		else
+			io.write("Wrong selection argument! aborting. \n")
+			return
 		end
-		n = file:read(1)
-		printer.commit(1)
-		n = file:read(1)
-		print("part ".. i .. ":" .. j .." committed")
-		io.read("*n")
-
-	else
-		io.write("Wrong selection argument! aborting. \n")
-		return
-	end
 else --not closed~!
 
-while n do
-	printer.reset()
-	printer.setTooltip("part" .. index)
+	while n do
+		printer.reset()
+		printer.setTooltip("part" .. index)
 
-	file:read(1)
-
-
+		file:read(1)
 
 
-		while n and n~='+' do
 
-		 -- n is the next char
 
-		x = tonumber(n, 16)
-		y = file:read(1)
-		l = file:read(1)
-		y = tonumber(y, 16)
-		l = tonumber(l, 16)+1
-		local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
-		print("coords: "..x.. ":" ..y)
+			while n and n~='+' do
 
-		if not result then
-			io.write("Failed adding shape: " .. tostring(reason) .. "\n")
-			io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
-			break
-		end
-		n = file:read(1)
+			 -- n is the next char
+
+			x = tonumber(n, 16)
+			y = file:read(1)
+			l = file:read(1)
+			y = tonumber(y, 16)
+			l = tonumber(l, 16)+1
+			local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
+			print("coords: "..x.. ":" ..y)
+
+			if not result then
+				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
+				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
+				break
+			end
+			n = file:read(1)
+	end
+	printer.commit(1)
+	n = file:read(1)
+	print("part ".. index .." committed")
+	index = index + 1
+	io.read("*n")
+	end
 end
-printer.commit(1)
-n = file:read(1)
-print("part ".. index .." committed")
-index = index + 1
-io.read("*n")
-end
+io.write("We've got to the very end YAYAY")
 
 
