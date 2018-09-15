@@ -1,3 +1,12 @@
+
+local component = require("component")
+local shell = require("shell")
+local fs = require("filesystem")
+
+local printer = component.printer3d
+local args = shell.parse(...)
+
+file = fs.open(args[1], "rb")
 printer.reset();
 for i=0,16 do
     for j=0,16 do
@@ -13,5 +22,3 @@ printer.commit(1)
     io.write("Failed adding shape: " .. tostring(reason) .. "\n")
   end
 printer.commit(1)
-
-stone

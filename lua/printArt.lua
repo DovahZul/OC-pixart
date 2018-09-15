@@ -98,7 +98,7 @@ else
 			l = file:read(1)
 			y = tonumber(y, 16)
 			l = tonumber(l, 16)+1
-			printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
+			result = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
 			n = file:read(1)
 
 			if not result then
@@ -112,8 +112,14 @@ else
 		n = file:read(1)
 		print("part ".. index .." committed")
 		index = index + 1
+
 		status, ready = printer.status()
-		--io.read("*n")
+		io.write("waiting for printer..." .. "\n")
+		while status ~= "idle" and ready ~=true do
+			os.sleep(1)
+			status, ready = printer.status()
+		end
+
 	end
 end
 io.write("We've got to the very end YAYAY")
