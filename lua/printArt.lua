@@ -25,30 +25,50 @@ printer.setRedstoneEmitter(false)
 printer.setButtonMode(false)
 
 --reading aspect ratio of an image in its parts with predetermined size (look up in Printer.java)
+meta = ""
 while n and n~='|' do
-	meta += file.read(1)
+	meta = meta .. tostring(n)
+	n = file:read(1)
 end
-
-xmax = tonumber(string.sub(meta, 0, string.find(meta, ':')))
-ymax = tonumber(string.sub(meta, string.find(meta, ':')))
+file:read(1)
+io.write("meta: " .. meta .. "\n")
+xmax = tonumber(string.sub(meta, 1, string.find(meta, ':')-1) )
+ymax = tonumber(string.sub(meta, string.find(meta, ':')+1) )
+--io.write(xmax)
+--io.write(ymax)
 io.write("resolution: ".. xmax .. ":" .. ymax .. " blocks, totally " .. xmax*ymax .. "\n")
 
+[[
+io.write("Continue: Y/n")
+evt, key = os.pullEvent()
+
+if evt == "char" and key == somekey then
+	io.write("Aborting.")
+	return
+elseif evt =="key" and key == keys.enter then
+  --	break
+end
+]]
+
+--getting coords of target block to print
 if selection ~= nill then
-	if string.match(selection, "^\d+:\d+$") then
+	if string.match(selection, "%d+:%d+") then
 		xpos = tonumber(string.sub(selection, 0, string.find(selection, ':')))
-		ypos = tonumber(string.sub(selection, string.find(selection, string.find(meta, ':')))
+		ypos = tonumber(string.sub(selection, string.find(selection, string.find(meta, ':'))))
 		io.write("single print of block with position " .. xpos .. "+" .. ypos .. "\n")
+
 
 		--goint to needed separator ( too ungainly perhaps, got to fix it in time.. )
 		separator_index = 0
 		while n or separator_index <= xpos*ypos do
 			n = file:read(1)
-			if n == '+' do
+			if n == '+' then
 				separator_index = separator_index + 1
 			end
 		end
 
-		--printing target block
+		--print target block
+		printer.reset()
 		while n and n~='+' do
 			-- n is the next char
 			x = tonumber(n, 16)
@@ -61,21 +81,22 @@ if selection ~= nill then
 
 			if not result then
 				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
-				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
+				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed" .. "\n")
 				break
 			end
+		end
 			n = file:read(1)
 			printer.commit(1)
 			n = file:read(1)
 			print("part ".. xpos .. ":" .. ypos .." committed")
-			io.read("*n")
+			--io.read("*n")
 
 		else
 			io.write("Wrong selection argument! aborting. \n")
 			return
 		end
 else
-	--printing whole image
+	--print whole image
 	while n do
 		printer.reset()
 		printer.setTooltip("part" .. index)
