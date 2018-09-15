@@ -5,20 +5,21 @@ local fs = require("filesystem")
 local printer = component.printer3d
 local args = shell.parse(...)
 
--- we re intelligent -> make big images from one command possible
--- a + = new file
-
 file = fs.open(args[1], "rb")
 if not file then
   io.write("No file named " .. args[1])
 end
 
+local selection = args[3]
+local i = 0
+local j = 0
+
 index = 1
 n = file:read(1)
 while n do
 	printer.reset()
-	printer.setLabel("part" .. index)
-	printer.setTooltip(args[3])
+	printer.setLabel(args[2])
+	printer.setTooltip("part" .. index)
 	printer.setLightLevel(15)
 	printer.setRedstoneEmitter(false)
 	printer.setButtonMode(false)
@@ -31,7 +32,17 @@ while n do
 			io.write("resolution: ".. i .. ":" .. j .. " blocks, totally " .. i*j .. "\n")
 			file:read(1)
 
+		if selection ~= nill then
+			if string.match(selection, "") then
+				io.write("single print of block with position " .. i .. "+" .. j .. "\n")
 
+			-------
+			else
+				io.write("Wrong selection argument! aborting. \n")
+				return
+			end
+
+		else
 
 		while n and n~='+' do
 
