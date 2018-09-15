@@ -16,36 +16,47 @@ end
 index = 1
 n = file:read(1)
 while n do
-  printer.reset()
-  printer.setLabel("part" .. index)
-  printer.setTooltip(args[3])
-  printer.setLightLevel(15)
-  printer.setRedstoneEmitter(false)
-  printer.setButtonMode(false)
+	printer.reset()
+	printer.setLabel("part" .. index)
+	printer.setTooltip(args[3])
+	printer.setLightLevel(15)
+	printer.setRedstoneEmitter(false)
+	printer.setButtonMode(false)
 
-  while n and n~='+' do
-    -- n is the next char
-    x = tonumber(n, 16)
-	y = file:read(1)
-	l = file:read(1)
-	y = tonumber(y, 16)
-	l = tonumber(l, 16)+1
-	local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
-    print("coords: "..x.. ":" ..y)
+		while n and n~='|' do
+			meta += file.read(1)
+		end
+			i = tonumber(string.sub(meta, 0, meta.find(':')))
+			j = tonumber(strung.sub(meta, meta.find(':'))
+			io.write("resolution: ".. i .. ":" .. j .. " blocks, totally " .. i*j .. "\n")
+			file:read(1)
 
-    if not result then
-        io.write("Failed adding shape: " .. tostring(reason) .. "\n")
-        io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
-        break
-    end
-	n = file:read(1)
-  end
-  printer.commit(1)
-  n = file:read(1)
-  print("part ".. index .." committed")
-  index = index + 1
-  io.read("*n")
+
+
+		while n and n~='+' do
+
+		 -- n is the next char
+
+		x = tonumber(n, 16)
+		y = file:read(1)
+		l = file:read(1)
+		y = tonumber(y, 16)
+		l = tonumber(l, 16)+1
+		local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
+		print("coords: "..x.. ":" ..y)
+
+		if not result then
+			io.write("Failed adding shape: " .. tostring(reason) .. "\n")
+			io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
+			break
+		end
+		n = file:read(1)
 end
-
+printer.commit(1)
+n = file:read(1)
+print("part ".. index .." committed")
+index = index + 1
+io.read("*n")
+end
 
 
