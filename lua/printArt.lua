@@ -43,7 +43,6 @@ if selection ~= nill then
 			end
 		end
 
-
 		while n and n~='+' do
 			x = tonumber(n, 16)
 			y = file:read(1)
@@ -68,18 +67,14 @@ if selection ~= nill then
 			io.write("Wrong selection argument! aborting. \n")
 			return
 		end
-else --not closed~!
-
+else
 	while n do
 		printer.reset()
 		printer.setTooltip("part" .. index)
 
 		file:read(1)
 
-
-
-
-			while n and n~='+' do
+		while n and n~='+' do
 
 			 -- n is the next char
 
@@ -97,12 +92,12 @@ else --not closed~!
 				break
 			end
 			n = file:read(1)
-	end
-	printer.commit(1)
-	n = file:read(1)
-	print("part ".. index .." committed")
-	index = index + 1
-	io.read("*n")
+		end
+		printer.commit(1)
+		n = file:read(1)
+		print("part ".. index .." committed")
+		index = index + 1
+		io.read("*n")
 	end
 end
 io.write("We've got to the very end YAYAY")
