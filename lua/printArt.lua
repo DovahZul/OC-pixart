@@ -35,7 +35,7 @@ io.write("resolution: ".. xmax .. ":" .. ymax .. " blocks, totally " .. xmax*yma
 
 if selection ~= nill then
 	if string.match(selection, "^\d+:\d+$") then
-		xpos = tonumber(string.sub(selecion, 0, string.find(selection, ':')))
+		xpos = tonumber(string.sub(selection, 0, string.find(selection, ':')))
 		ypos = tonumber(string.sub(selection, string.find(selection, string.find(meta, ':')))
 		io.write("single print of block with position " .. xpos .. "+" .. ypos .. "\n")
 
