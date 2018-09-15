@@ -75,6 +75,7 @@ if selection ~= nill then
 			return
 		end
 else
+	--printing whole image
 	while n do
 		printer.reset()
 		printer.setTooltip("part" .. index)
