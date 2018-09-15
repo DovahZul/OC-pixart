@@ -18,8 +18,8 @@ public class Printer {
 	static void print(int x, int y, int c, int l){
 		output+=new String(new char[]{
 				hex.charAt(x),
-				hex.charAt(15-y),
-				hex.charAt(l),
+				hex.charAt(16-y-l),
+				hex.charAt(l-1),
 				hex.charAt((c>>20)&15),
 				hex.charAt((c>>16)&15),
 				hex.charAt((c>>12)&15),
@@ -65,13 +65,15 @@ public class Printer {
 
 					switch(mode)
 					{
+
 						case(1):
 						{
-							System.out.println((w/8)+":"+(h/8)+"blocks, totally "+ (w/8)*(h/8));
-							//output+=String.valueOf(w/8)+":"+String.valueOf(h/8)+"|";
-							for(int i=0;i<w;i+=8)
+							System.out.println("Resolution: "+h+"x"+w+" pixels.");
+							System.out.println((w/16)+":"+(h/16)+" blocks, totally "+ (w/16)*(h/16));
+							output+=String.valueOf(w/16)+":"+String.valueOf(h/16)+"|";
+							for(int i=0; i<w; i+=16)
 							{
-								for(int j=0;j<h;j+=8)
+								for(int j=0; j<h; j+=16)
 								{
 									partLossless(name, ttt, img, i, j);
 									output+="+";
@@ -81,6 +83,22 @@ public class Printer {
 						break;
 						}
 						case(2):
+						{
+							System.out.println("Resolution: "+h+"x"+w+" pixels.");
+							System.out.println((w/8)+":"+(h/8)+" blocks, totally "+ (w/8)*(h/8));
+							output+=String.valueOf(w/8)+":"+String.valueOf(h/8)+"|";
+							for(int i=0; i<w; i+=8)
+							{
+								for(int j=0; j<h; j+=8)
+								{
+									partLossless(name, ttt, img, i, j);
+									output+="+";
+								}
+							}
+
+						break;
+						}
+						case(3):
 						{
 							for(int i=0;i<w;i+=16)
 							{
@@ -105,8 +123,8 @@ public class Printer {
 		System.out.println("Done, you can insert it now into a file and then print it :) \n");
 		System.out.println(output.substring(0, output.length()-1));
 
-		File out = new File(System.getProperty("user.home")+"/Desktop/delete");
-		BufferedWriter writer = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/delete"));
+		File out = new File("../output");
+		BufferedWriter writer = new BufferedWriter(new FileWriter("output"));
 	    writer.write(output.substring(0,output.length()));
 
 	    writer.close();
@@ -114,7 +132,23 @@ public class Printer {
 
 	static void partLossless(String name, String ttt, BufferedImage img, int sx, int sy){
 		int that, same = 0;
-		for(int i=0;i<16;i+=2){
+		for(int i=0;i<16;i++){
+			for(int j=0;j<16;){
+				that = img.getRGB(i+sx, j+sy);
+				if(((that>>24)&255)>220){
+					same = 1;while(j+same<16 && same(img.getRGB(i+sx, j+sy+same), that)){same++;}
+					print(i, j, that, same);
+					j += same;
+				} else j++;
+			}
+		}
+	}
+
+
+	/*
+	 static void partLossless FOR 128 !!!!!(String name, String ttt, BufferedImage img, int sx, int sy){
+		int that, same = 0;
+		for(int i=0;i<16;i+=+){
 			for(int j=0;j<16;j+=2){
 				that = img.getRGB(i/2+sx, j/2+sy);
 				//if(((that>>24)&255)>220){
@@ -126,6 +160,7 @@ public class Printer {
 			}
 		}
 	}
+	 */
 	static void part(String name, String ttt, BufferedImage img, int sx, int sy){
 		int that, same = 0;
 		for(int i=0;i<16;i+=2){

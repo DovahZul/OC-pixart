@@ -30,25 +30,12 @@ while n and n~='|' do
 	meta = meta .. tostring(n)
 	n = file:read(1)
 end
-file:read(1)
-io.write("meta: " .. meta .. "\n")
+io.write("AFTER meta current n = " .. n .. "\n")
+--io.write("meta: " .. meta .. "\n")
 xmax = tonumber(string.sub(meta, 1, string.find(meta, ':')-1) )
 ymax = tonumber(string.sub(meta, string.find(meta, ':')+1) )
---io.write(xmax)
---io.write(ymax)
+
 io.write("resolution: ".. xmax .. ":" .. ymax .. " blocks, totally " .. xmax*ymax .. "\n")
-
-[[
-io.write("Continue: Y/n")
-evt, key = os.pullEvent()
-
-if evt == "char" and key == somekey then
-	io.write("Aborting.")
-	return
-elseif evt =="key" and key == keys.enter then
-  --	break
-end
-]]
 
 --getting coords of target block to print
 if selection ~= nill then
@@ -56,7 +43,6 @@ if selection ~= nill then
 		xpos = tonumber(string.sub(selection, 0, string.find(selection, ':')))
 		ypos = tonumber(string.sub(selection, string.find(selection, string.find(meta, ':'))))
 		io.write("single print of block with position " .. xpos .. "+" .. ypos .. "\n")
-
 
 		--goint to needed separator ( too ungainly perhaps, got to fix it in time.. )
 		separator_index = 0
@@ -97,35 +83,36 @@ if selection ~= nill then
 		end
 else
 	--print whole image
+	n = file:read(1)
 	while n do
 		printer.reset()
 		printer.setTooltip("part" .. index)
 
-		file:read(1)
-
+		io.write("Processing..." .. "\n")
 		while n and n~='+' do
 
 			-- n is the next char
+
 			x = tonumber(n, 16)
 			y = file:read(1)
 			l = file:read(1)
 			y = tonumber(y, 16)
 			l = tonumber(l, 16)+1
-			local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
-			print("coords: "..x.. ":" ..y)
+			printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
+			n = file:read(1)
 
 			if not result then
 				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
 				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
 				break
 			end
-			n = file:read(1)
 		end
 		printer.commit(1)
 		n = file:read(1)
 		print("part ".. index .." committed")
 		index = index + 1
-		io.read("*n")
+		status, ready = printer.status()
+		--io.read("*n")
 	end
 end
 io.write("We've got to the very end YAYAY")
