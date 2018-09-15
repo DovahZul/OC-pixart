@@ -68,7 +68,7 @@ public class Printer {
 
 						case(1):
 						{
-							System.out.println("Resolution: "+h+"x"+w+" pixels.");
+							System.out.println("Resolution: "+h+"x"+w+" pixels. \n");
 							System.out.println((w/16)+":"+(h/16)+" blocks, totally "+ (w/16)*(h/16));
 							output+=String.valueOf(w/16)+":"+String.valueOf(h/16)+"|";
 							for(int i=0; i<w; i+=16)
