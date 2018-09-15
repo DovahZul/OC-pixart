@@ -66,9 +66,9 @@ if selection ~= nill then
 			print("coords: "..x.. ":" ..y)
 
 			if not result then
-				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
+				io.write("Failed adding shape, reason:" .. tostring(reason) .. "\n")
 				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed" .. "\n")
-				break
+				return
 			end
 		end
 			n = file:read(1)
@@ -102,9 +102,10 @@ else
 			n = file:read(1)
 
 			if not result then
+
 				io.write("Failed adding shape: " .. tostring(reason) .. "\n")
 				io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
-				break
+				return
 			end
 		end
 		printer.commit(1)
@@ -116,5 +117,4 @@ else
 	end
 end
 io.write("We've got to the very end YAYAY")
-
 
