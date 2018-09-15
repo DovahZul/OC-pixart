@@ -33,7 +33,7 @@ while n do
 			file:read(1)
 
 		if selection ~= nill then
-			if string.match(selection, "") then
+			if string.match(selection, "^\d+:\d+$") then
 				io.write("single print of block with position " .. i .. "+" .. j .. "\n")
 
 			-------
