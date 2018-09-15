@@ -22,7 +22,7 @@ while n do
   printer.setLightLevel(15)
   printer.setRedstoneEmitter(false)
   printer.setButtonMode(false)
-  
+
   while n and n~='+' do
     -- n is the next char
     x = tonumber(n, 16)
@@ -30,9 +30,9 @@ while n do
 	l = file:read(1)
 	y = tonumber(y, 16)
 	l = tonumber(l, 16)+1
-	local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))   
+	local result, reason = printer.addShape(x, y, 15, x+1, y+l, 16, "opencomputers:White", false, tonumber(file:read(6), 16))
     print("coords: "..x.. ":" ..y)
-    
+
     if not result then
         io.write("Failed adding shape: " .. tostring(reason) .. "\n")
         io.write("Shapes count:" .. printer.getShapeCount() .. "from " .. printer.getMaxShapeCount() .. " allowed\n")
@@ -46,25 +46,6 @@ while n do
   index = index + 1
   io.read("*n")
 end
-///////////////////////////////////////////////////////////
-printer.reset();
-for i=0,16 do
-    for j=0,16 do
-        printer.addShape(i, j, 15, i+1, j+1, 16, "opencomputers:White", false, 0xff4d4d)
-    end
-end
-printer.commit(1)
-
-
-
-        local result, reason = printer.addShape(i, j, 15, i+1, j+1, 16, "opencomputers:White", false, 0xff4d4d)
-  if not result then
-    io.write("Failed adding shape: " .. tostring(reason) .. "\n")
-  end
-printer.commit(1)
-
-stone
-
 
 
 
