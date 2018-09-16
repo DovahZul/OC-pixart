@@ -19,10 +19,7 @@ local ypos = 0
 
 index = 1
 n = file:read(1)
-printer.setLabel(args[2])
-printer.setLightLevel(15)
-printer.setRedstoneEmitter(false)
-printer.setButtonMode(false)
+
 
 --reading aspect ratio of an image in its parts with predetermined size (look up in Printer.java)
 meta = ""
@@ -30,8 +27,7 @@ while n and n~='|' do
 	meta = meta .. tostring(n)
 	n = file:read(1)
 end
-io.write("AFTER meta current n = " .. n .. "\n")
---io.write("meta: " .. meta .. "\n")
+
 xmax = tonumber(string.sub(meta, 1, string.find(meta, ':')-1) )
 ymax = tonumber(string.sub(meta, string.find(meta, ':')+1) )
 
@@ -55,6 +51,10 @@ if selection ~= nill then
 
 		--print target block
 		printer.reset()
+		printer.setLabel(args[2])
+		printer.setLightLevel(15)
+		printer.setRedstoneEmitter(false)
+		printer.setButtonMode(false)
 		while n and n~='+' do
 			-- n is the next char
 			x = tonumber(n, 16)
@@ -86,7 +86,12 @@ else
 	n = file:read(1)
 	while n do
 		printer.reset()
+		printer.setLabel(args[2])
 		printer.setTooltip("part" .. index)
+		printer.setLightLevel(15)
+		printer.setRedstoneEmitter(false)
+		printer.setButtonMode(false)
+
 
 		io.write("Processing..." .. "\n")
 		while n and n~='+' do
