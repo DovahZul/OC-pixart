@@ -120,7 +120,7 @@ public class Printer {
 		}
 
 		//Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(output.substring(0, output.length()-1)), null);
-		System.out.println("Done, you can insert it now into a file and then print it :) \n");
+		System.out.println("Completed. \n");
 		System.out.println(output.substring(0, output.length()-1));
 
 		File out = new File("../output");
